@@ -294,10 +294,10 @@ void chassisPID(bool forward,bool ifLift,bool ifHoldPincher,int target)
 
 	resetChassisEncoders();
 
-	while(((abs(SensorValue[encoderR])) < target) || ((abs(SensorValue[encoderL]))< target))
+	while(((abs(SensorValue[chassisR.sensorPort])) < target) || ((abs(SensorValue[chassisL.sensorPort]))< target))
 	{
-		errorL = target - abs(SensorValue[encoderL]);
-		errorR = target - abs(SensorValue[encoderR]);
+		errorL = target - abs(SensorValue[chassisL.sensorPort]);
+		errorR = target - abs(SensorValue[chassisR.sensorPort]);
 
 		integralL += errorL;
 		integralR += errorR;
@@ -377,22 +377,22 @@ void chassisPID(bool forward,bool ifLift,bool ifHoldPincher,int target)
 
 void autoOpenPincher()
 {
-	while(SensorValue[pincherDegreeL] > pincherLOpen  || SensorValue[pincherDegreeR] > pincherROpen)
+	while(SensorValue[pincherL.sensorPort] > pincherL.open  || SensorValue[pincherR.sensorPort] > pincherR.open)
 	{
-		int openIndexL = pCalc(pincherLOpen, pincherDegreeL, 0.9);
-		int openIndexR = pCalc(pincherROpen, pincherDegreeR,0.9);
+		int openIndexL = pCalc(pincherL.open, pincherL.sensorPort, 0.9);
+		int openIndexR = pCalc(pincherR.open, pincherR.sensorPort,0.9);
 
 		if(openIndexL < 20 || openIndexR <20)
 		{
 			break;
 		}
 
-		if(SensorValue[pincherDegreeL] > pincherLOpen)
+		if(SensorValue[pincherL.sensorPort] > pincherL.open)
 		{
 			motor[pincherL.motorPort] = -openIndexL;
 		}
 
-		if(SensorValue[pincherDegreeR] > pincherROpen)
+		if(SensorValue[pincherR.sensorPort] > pincherR.open)
 		{
 			motor[pincherR] = -openIndexR;
 		}
@@ -413,15 +413,15 @@ void autoClosePincher()
 	pincherDrive(125);
 	wait1Msec(200);
 	clearTimer(T4);
-	while(time1[T4]<650 &&(SensorValue[pincherDegreeL] < pincherLClose || SensorValue[pincherDegreeR] < pincherRClose))
+	while(time1[T4]<650 &&(SensorValue[pincherL.sensorPort] < pincherL.close || SensorValue[pincherR.sensorPort] < pincherR.close))
 	{
-		currentReadL = SensorValue[pincherDegreeL];
-		currentReadR = SensorValue[pincherDegreeR];
+		currentReadL = SensorValue[pincherL.sensorPort];
+		currentReadR = SensorValue[pincherR.sensorPort];
 
 		speedL = abs(currentReadL - preReadL);
 		speedR = abs(currentReadR - preReadR);
 
-		if(SensorValue[pincherDegreeL] < pincherLClose)
+		if(SensorValue[pincherL.sensorPort] < pincherL.close)
 		{
 			if(speedL>5)
 			{
@@ -438,7 +438,7 @@ void autoClosePincher()
 			motor[pincherL.motorPort] = 0;
 		}
 
-		if(SensorValue[pincherDegreeR] < pincherRClose)
+		if(SensorValue[pincherR.sensorPort] < pincherR.close)
 		{
 			if(speedR>5)
 			{
@@ -471,29 +471,29 @@ void midPincher()
 	int indexR;
 	int indexL;
 	clearTimer(T2);
-	while((time1(T2)<700) && (((pincherLMid-5)<SensorValue[pincherDegreeL] <(pincherLMid+5))  || ((pincherRMid-5)<SensorValue[pincherDegreeR] <(pincherRMid+5))))
+	while((time1(T2)<700) && (((pincherLMid-5)<SensorValue[pincherL.sensorPort] <(pincherLMid+5))  || ((pincherRMid-5)<SensorValue[pincherR.sensorPort] <(pincherRMid+5))))
 	{
-    if(SensorValue[pincherDegreeR]<(pincherRMid-5))
+    if(SensorValue[pincherR.sensorPort]<(pincherRMid-5))
     {
-    	indexR = pCalc(pincherRMid, pincherDegreeR,0.1);
+    	indexR = pCalc(pincherRMid, pincherR.sensorPort,0.1);
       motor[pincherR.motorPort] = indexR;
     }
-    else if(SensorValue[pincherDegreeR] > (pincherRMid+5))
+    else if(SensorValue[pincherR.sensorPort] > (pincherRMid+5))
     {
-    	indexR = pCalc(pincherRMid, pincherDegreeR,0.1);
+    	indexR = pCalc(pincherRMid, pincherR.sensorPort,0.1);
       motor[pincherR.motorPort] = - indexR;
     }
    	else
    		motor[pincherR.motorPort] =0;
 
-    if(SensorValue[pincherDegreeL]< (pincherLMid-5))
+    if(SensorValue[pincherL.sensorPort]< (pincherLMid-5))
     {
-    	indexL = pCalc(pincherLMid, pincherDegreeL, 0.1);
+    	indexL = pCalc(pincherLMid, pincherL.sensorPort, 0.1);
       motor[pincherL.motorPort] = indexL;
     }
-    else if(SensorValue[pincherDegreeL] > (pincherLMid+5))
+    else if(SensorValue[pincherL.sensorPort] > (pincherLMid+5))
     {
-    	indexL = pCalc(pincherLMid, pincherDegreeL, 0.1);
+    	indexL = pCalc(pincherLMid, pincherL.sensorPort, 0.1);
       motor[pincherL.motorPort] = - indexL;
     }
     else
@@ -504,7 +504,7 @@ void midPincher()
 
 void autoArmDown()
 {
-	while(abs(SensorValue[encoderArm])>arm.down)
+	while(abs(SensorValue[arm.sensorPort])>arm.down)
 	{
 		armDrive(-80);
 	}
@@ -513,7 +513,7 @@ void autoArmDown()
 
 void autoArmUp(char type)
 {
-	while(abs(SensorValue[encoderArm])<arm.full)
+	while(abs(SensorValue[arm.sensorPort])<arm.full)
 	{
 		armDrive(125);
 	}
@@ -540,7 +540,7 @@ void autoArmHold(char type)
 		break;
 	}
 
-	while(abs(SensorValue[encoderArm])<mv_armHold)
+	while(abs(SensorValue[arm.sensorPort])<mv_armHold)
 	{
 		armDrive(60);
 		pincherDrive(15);
@@ -551,7 +551,7 @@ void autoArmHold(char type)
 
 void midArm()
 {
-	while(abs(SensorValue[encoderArm])> 65)
+	while(abs(SensorValue[arm.sensorPort])> 65)
 	{
 		armDrive(-70);
 		wait1Msec(25);
