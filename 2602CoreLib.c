@@ -91,7 +91,7 @@ void setPincher(char side,tMotor motorport, tSensors sensorport,int openMV,int m
     pincherR.sensorPort=sensorport;
     pincherR.open=openMV;
     pincherR.mid=midmV;
-    pincherR.clsoe=closeMV;
+    pincherR.close=closeMV;
   }
   else if(side=="L")
   {
@@ -99,14 +99,14 @@ void setPincher(char side,tMotor motorport, tSensors sensorport,int openMV,int m
     pincherL.sensorPort=sensorport;
     pincherL.open=openMV;
     pincherL.mid=midmV;
-    pincherL.clsoe=closeMV;
+    pincherL.close=closeMV;
   }
   else {}
 }
 
 void setGyro(tSensors port,int scale)
 {
-  gyro1.sort=port;
+  gyro1.port=port;
   gyro1.scale=scale;
 }
 
@@ -245,19 +245,19 @@ void gyroAdjustment(int nDegree)//counterclockwise is postive
   clearTimer(T1);
   while(time1[T1]<500)
   {
-    error = abs(gyroAngle - nDegree);
+    error = abs(gyro1.angle - nDegree);
     intergrate +=error;
     index = 16*error + 0.1*intergrate;
     if(index>30)
     	index = 30;
    	else
    		index = index;
-   if(gyroAngle>nDegree)
+   if(gyro1.angle>nDegree)
    {
     motor[chassisL.motorPort] = index;
     motor[chassisR.motorPort] = -index;
  		}
- 		else if(gyroAngle<nDegree)
+ 		else if(gyro1.angle<nDegree)
  		{
  		motor[chassisL.motorPort] = -index;
     motor[chassisR.motorPort] = index;
