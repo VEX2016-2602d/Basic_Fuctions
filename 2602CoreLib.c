@@ -471,29 +471,29 @@ void midPincher()
 	int indexR;
 	int indexL;
 	clearTimer(T2);
-	while((time1(T2)<700) && (((pincherLMid-5)<SensorValue[pincherL.sensorPort] <(pincherLMid+5))  || ((pincherRMid-5)<SensorValue[pincherR.sensorPort] <(pincherRMid+5))))
+	while((time1(T2)<700) && (((pincherL.mid-5)<SensorValue[pincherL.sensorPort] <(pincherL.mid+5))  || ((pincherR.mid-5)<SensorValue[pincherR.sensorPort] <(pincherR.mid+5))))
 	{
-    if(SensorValue[pincherR.sensorPort]<(pincherRMid-5))
+    if(SensorValue[pincherR.sensorPort]<(pincherR.mid-5))
     {
-    	indexR = pCalc(pincherRMid, pincherR.sensorPort,0.1);
+    	indexR = pCalc(pincherR.mid, pincherR.sensorPort,0.1);
       motor[pincherR.motorPort] = indexR;
     }
-    else if(SensorValue[pincherR.sensorPort] > (pincherRMid+5))
+    else if(SensorValue[pincherR.sensorPort] > (pincherR.mid+5))
     {
-    	indexR = pCalc(pincherRMid, pincherR.sensorPort,0.1);
+    	indexR = pCalc(pincherR.mid, pincherR.sensorPort,0.1);
       motor[pincherR.motorPort] = - indexR;
     }
    	else
    		motor[pincherR.motorPort] =0;
 
-    if(SensorValue[pincherL.sensorPort]< (pincherLMid-5))
+    if(SensorValue[pincherL.sensorPort]< (pincherL.mid-5))
     {
-    	indexL = pCalc(pincherLMid, pincherL.sensorPort, 0.1);
+    	indexL = pCalc(pincherL.mid, pincherL.sensorPort, 0.1);
       motor[pincherL.motorPort] = indexL;
     }
-    else if(SensorValue[pincherL.sensorPort] > (pincherLMid+5))
+    else if(SensorValue[pincherL.sensorPort] > (pincherL.mid+5))
     {
-    	indexL = pCalc(pincherLMid, pincherL.sensorPort, 0.1);
+    	indexL = pCalc(pincherL.mid, pincherL.sensorPort, 0.1);
       motor[pincherL.motorPort] = - indexL;
     }
     else
