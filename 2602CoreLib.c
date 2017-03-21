@@ -25,7 +25,7 @@ typedef struct
   tMotor motorPortR;
   tMotor motorPortL;
   tSensors sensorPort;
-  int down
+  int down;
   int full;
   int holdNull;
   int holdStar;
@@ -60,7 +60,7 @@ void setArm(tMotor motorR, tMotor motorL, tSensors port,int down, int full,int n
   arm.holdCube=cube;
 }
 
-void setChassis(char side,tMotor motorport, tSensors sensorport, float kp, float ki, float kd, float integrallimit)
+void setChassis(string side,tMotor motorport, tSensors sensorport, float kp, float ki, float kd, float integrallimit)
 {
   if(side=="R")
   {
@@ -83,7 +83,7 @@ void setChassis(char side,tMotor motorport, tSensors sensorport, float kp, float
   else {}
 }
 
-void setPincher(char side,tMotor motorport, tSensors sensorport,int openMV,int midMV,int closeMV)
+void setPincher(string side,tMotor motorport, tSensors sensorport,int openMV,int midMV,int closeMV)
 {
   if(side=="R")
   {
